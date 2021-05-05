@@ -17,16 +17,18 @@ const App = ({ qty, dispatch }) => {
     //     dispatch(addItems(item));
     //     input.value = '';
     // }
-    const componentDidMount = () => {
+    const [startDate, setStartDate] = useState(new Date());
+    componentWillMount = () => {
+        this.getDataProduct();
+    };
+    getDataProduct = () => {
         axios.get(`https://5efabb3a80d8170016f758ee.mockapi.io/products`)
           .then(res => {
             const products = res.data;
             this.setState({ products });
           })
-    }
-    componentWillMount= () => {
-        this.componentDidMount();
     };
+    
 
     return (
         <div className={'wrapper'}>
@@ -39,6 +41,12 @@ const App = ({ qty, dispatch }) => {
             </div>
             <div>
                 <span> Date</span>
+                <DatePicker
+                    selected={startDate}
+                    onChange={date => setStartDate(date)}
+                    isClearable
+                    placeholderText="Date"
+                    />
             </div>
             <div>
                 <span>Locations</span>
@@ -52,17 +60,6 @@ const App = ({ qty, dispatch }) => {
             <table>
 
             </table>
-            
-            {/* <form onSubmit={handleSubmit} >
-                <div className={'div-wrapper'}>
-                    <label>APP</label>
-                    <input type="text" name="name" ref={node => (input = node)} />
-                </div>
-                <div className={'div-wrapper'}>
-                    <label>&nbsp;</label>
-                    <input type="submit" value="Submit" />
-                </div>
-            </form> */}
         </div>
     )
 }

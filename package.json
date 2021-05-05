@@ -6,6 +6,7 @@
     "axios": "^0.21.1",
     "babel-polyfill": "^6.26.0",
     "react": "^16.8.5",
+    "react-datepicker": "^3.8.0",
     "react-dom": "^16.8.5",
     "react-redux": "^6.0.1",
     "react-scripts": "2.1.8",
