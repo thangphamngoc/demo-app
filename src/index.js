@@ -8,9 +8,8 @@ import './index.css';
 const store = createStore(rootReducer);
 
 ReactDOM.render(
-    <Provider store={ store }>
-        <App />
-        <hr/>
-    </Provider>, 
+    <React.StrictMode>
+    <App />
+  </React.StrictMode>, 
     document.getElementById('root')
 );
