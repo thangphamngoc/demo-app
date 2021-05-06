@@ -1,0 +1,8 @@
+@mixin fontColor($fontSize, $color) {
+  font-size: $fontSize;
+  color: $color;
+}
+
+.header {
+  @include fontColor(23px, #333);
+}
