@@ -103,13 +103,6 @@ const Calculator = () => {
 
   // Also the total sum of all location units cannot be larger than the available production for that date and product
   const handleLocationUnit = (units, date) => {
-    const maxDist = locations[3].max_dist;
-    console.log(maxDist, "max_dist");
-    if (units > maxDist) {
-      alert("The location units cannot be larger than the locations Max Distribution value");
-      resetDate();
-      return;
-    }
     setDate(date);
     setUnits(units);
   };

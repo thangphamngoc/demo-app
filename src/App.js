@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import Header from "./components/layout/Header";
-// import "App.scss";
 
 // Path
 const APP_HOME = "/";

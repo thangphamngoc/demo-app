@@ -9,7 +9,7 @@ const Location = React.memo(({ place, units, cost }) => {
       <div className="location">
         <div className="location-item">
           <label>Place</label>
-          <div className="">{place}</div>
+          <div className="">{place?.name}</div>
         </div>
         <div className="location-item">
           <label>Units</label>
