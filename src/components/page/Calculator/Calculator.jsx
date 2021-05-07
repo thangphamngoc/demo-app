@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
+import "./Calculator.scss";
+import Location from "../Location/Location";
 import { getDataProduct, getLocation, addToCard } from "../../../services/CalculatorService";
 import { customDate, getNumberKey } from "../../../utils/date";
-import Location from "../Location/Location";
-import "./Calculator.scss";
 
 const Calculator = () => {
   const [products, setProducts] = useState([]);
@@ -27,19 +27,6 @@ const Calculator = () => {
     };
     const response = await addToCard(params);
   };
-  const getProduct = async () => {
-    const response = await getDataProduct();
-    setProducts(response);
-  };
-
-  const handleGetLocation = async () => {
-    const response = await getLocation();
-    console.log(response);
-    setLocations(response);
-  };
-
-  const chooseProduct = ({ e }) => setProduct(e.value);
-
   const handleDate = ({ e }) => {
     if (!product) {
       alert("Please select product");
@@ -53,7 +40,15 @@ const Calculator = () => {
     setPrice(data.price_per_unit);
   };
   const { start, end } = customDate();
-
+  const handleGetLocation = async () => {
+    const response = await getLocation();
+    setLocations(response);
+  };
+  const getProduct = async () => {
+    const response = await getDataProduct();
+    setProducts(response);
+  };
+  const chooseProduct = ({ e }) => setProduct(e.value);
   const handleCaculator = (val, key) => {
     if (!val[key]) {
       const lastItem = Object.keys(val)[Object.keys(val).length - 1];
@@ -61,14 +56,11 @@ const Calculator = () => {
     }
     return val[key];
   };
-
   const handleLocationUnit = (units, date) => {
     setDate(date);
     setUnits(units);
   };
-
   const chooseDate = () => setDate("");
-
   useEffect(() => {
     getProduct();
     handleGetLocation();
