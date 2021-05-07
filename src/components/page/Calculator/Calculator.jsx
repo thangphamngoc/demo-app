@@ -74,9 +74,9 @@ const Calculator = () => {
       <div className="form-group">
         <form onSubmit={submit}>
           <div className="item">
-            <label>Product</label>
-            <select name="product" onChange={chooseProduct}>
-              <option value="">choose</option>
+            <p>Product</p>
+            <select onChange={chooseProduct}>
+              <option>choose</option>
               {products.map((product) => {
                 return (
                   <option key={product.id} value={product.id}>
@@ -87,18 +87,18 @@ const Calculator = () => {
             </select>
           </div>
           <div className="item">
-            <label>Date</label>
+            <p>Date</p>
             <input type="date" min={start} max={end} value={date} onChange={handleDate} />
           </div>
           <div className="item">
             <Location place={locations[3]} units={units} cost={units * price} />
           </div>
           <div className="item">
-            <label>Total Units</label>
+            <p>Total Units</p>
             <div>{units}</div>
           </div>
           <div className="item">
-            <label>Total Cost</label>
+            <p>Total Cost</p>
             <div>{units * price}</div>
           </div>
           <button type="submit">
