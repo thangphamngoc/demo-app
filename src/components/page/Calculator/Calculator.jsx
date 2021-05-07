@@ -1,28 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { getProduct, getLocation, addToCard } from "../../services/CalculatorService";
-import { customDate, getNumberKey } from "../../utils/constants";
-import Location from "./Location";
+import { getDataProduct, getLocation, addToCard } from "../../../services/CalculatorService";
+import { customDate, getNumberKey } from "../../../utils/date";
+import Location from "../Location/Location";
 import "./Calculator.scss";
 
-// requirement (do not need to do ADD LOCATION), so i'm assigned location with id = 4
-
 const Calculator = () => {
-  const [loading, setLoading] = useState(false);
-  const [isSubmit, setIsSubmit] = useState(false);
   const [products, setProducts] = useState([]);
   const [locations, setLocations] = useState([]);
-  const [date, setDate] = useState("");
-  const [product, setProduct] = useState("");
   const [units, setUnits] = useState(0);
   const [price, setPrice] = useState(0);
+  const [date, setDate] = useState("");
 
-  const handleSubmit = async (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     if (!date || !product) {
       alert("Please choose product or date");
       return;
     }
-    const params = {
+    const request = {
       date: date,
       product: product,
       locations: {
@@ -30,132 +25,93 @@ const Calculator = () => {
         quantity: units
       }
     };
-
-    console.log("submit", params);
-    try {
-      setIsSubmit(true);
-      const res = await addToCard(params);
-      if (res && res.status === "success") {
-        alert("Complete!");
-      }
-      console.log(res);
-    } catch (errors) {
-      console.log(errors);
-    } finally {
-      setIsSubmit(false);
-    }
+    const response = await addToCard(params);
   };
-
-  // Get date custom
-  const { min, max } = customDate();
-
-  const handleGetProduct = async () => {
-    try {
-      const res = await getProduct();
-      console.log(res);
-      setProducts(res);
-    } catch (errors) {
-      console.log(errors);
-    } finally {
-      console.log("finally");
-    }
+  const getProduct = async () => {
+    const response = await getDataProduct();
+    setProducts(response);
   };
 
   const handleGetLocation = async () => {
-    try {
-      setLoading(true);
-      const res = await getLocation();
-      console.log(res);
-      setLocations(res);
-    } catch (errors) {
-      console.log(errors);
-    } finally {
-      setLoading(false);
-    }
+    const response = await getLocation();
+    console.log(response);
+    setLocations(response);
   };
 
-  const handleProduct = ({ target }) => setProduct(target.value);
+  const chooseProduct = ({ e }) => setProduct(e.value);
 
-  const handleDate = ({ target }) => {
+  const handleDate = ({ e }) => {
     if (!product) {
-      alert("Please select product !");
-      resetDate();
+      alert("Please select product");
+      chooseDate();
       return;
     }
-    const numberKey = getNumberKey(target.value);
-    if (numberKey && numberKey > 0) {
-      const objMaxPro = products.filter((p) => p.id === product)[0];
-      const units = handleMaxPro(objMaxPro.max_production, numberKey);
-      console.log(units);
-      handleLocationUnit(units, target.value);
-      setPrice(objMaxPro.price_per_unit);
+    const numberKey = getNumberKey(e.value);
+    const data = products.filter((product) => product.id === product)[0];
+    const units = handleCaculator(data.max_production, numberKey);
+    handleLocationUnit(units, e.value);
+    setPrice(data.price_per_unit);
+  };
+  const { start, end } = customDate();
+
+  const handleCaculator = (val, key) => {
+    if (!val[key]) {
+      const lastItem = Object.keys(val)[Object.keys(val).length - 1];
+      return val[lastItem];
     }
+    return val[key];
   };
 
-  // If the number of days in the future the user has picked is greater than the largest days key then use the largest key
-  const handleMaxPro = (maxPro, key) => {
-    if (!maxPro[key]) {
-      const lastItem = Object.keys(maxPro)[Object.keys(maxPro).length - 1];
-      return maxPro[lastItem];
-    }
-    return maxPro[key];
-  };
-
-  // Also the total sum of all location units cannot be larger than the available production for that date and product
   const handleLocationUnit = (units, date) => {
     setDate(date);
     setUnits(units);
   };
 
-  const resetDate = () => setDate("");
+  const chooseDate = () => setDate("");
 
   useEffect(() => {
-    handleGetProduct();
+    getProduct();
     handleGetLocation();
   }, []);
 
-  if (loading) return <div>loading...</div>;
-
   return (
-    <main className="main">
-      <div className="cal-form">
-        <form onSubmit={handleSubmit}>
-          <div className="cal-form__field">
+    <main className="calculator">
+      <div className="header">
+        <h2> Calculator</h2>
+      </div>
+      <div className="form-group">
+        <form onSubmit={submit}>
+          <div className="item">
             <label>Product</label>
-            <select name="product" onChange={handleProduct}>
+            <select name="product" onChange={chooseProduct}>
               <option value="">choose</option>
-              {products.map((p) => {
+              {products.map((product) => {
                 return (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
+                  <option key={product.id} value={product.id}>
+                    {product.name}
                   </option>
                 );
               })}
             </select>
           </div>
-          <div className="cal-form__field">
+          <div className="item">
             <label>Date</label>
-            <input type="date" value={date} min={min} max={max} name="date" id="date" onChange={handleDate} />
+            <input type="date" min={start} max={end} value={date} onChange={handleDate} />
           </div>
-          <div className="cal-form__field">
+          <div className="item">
             <Location place={locations[3]} units={units} cost={units * price} />
           </div>
-          <div className="cal-form__field">
+          <div className="item">
             <label>Total Units</label>
             <div>{units}</div>
           </div>
-          <div className="cal-form__field">
+          <div className="item">
             <label>Total Cost</label>
             <div>{units * price}</div>
           </div>
-
-          {isSubmit ? (
-            <div>Loading...</div>
-          ) : (
-            <button type="submit" className="btn">
-              Submit
+          <button type="submit">
+            Submit
             </button>
-          )}
         </form>
       </div>
     </main>
