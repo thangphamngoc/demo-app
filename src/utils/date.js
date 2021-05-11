@@ -1,9 +1,11 @@
+import moment from "moment";
+
 export const customDate = () => {
   const date = new Date();
   date.setDate(date.getDate() + 1);
   return {
     start: moment(date).format("YYYY-MM-DD"),
-    end: moment(fromDate).add(7, "days").format("YYYY-MM-DD")
+    end: moment(moment(date).format("YYYY-MM-DD")).add(7, "days").format("YYYY-MM-DD")
   };
 };
 export const dateValue = (v) => {

@@ -2,15 +2,39 @@
   border: 1px solid #888;
   border-radius: 5px;
   padding: 15px;
+  display: flex;
+  justify-content: center;
 }
+
+.content {
+  border-radius: 10px;
+  padding: 10px;
+  width: 500px;
+  border: 1px solid #333;
+  background-image: linear-gradient(to right, rgba(239, 174, 174, 80%), #b9b9b9);
+
+  select,input {
+    height: 30px;
+    margin-left: 10px;
+  }
+  .item{
+    align-items: center;
+  }
+  .location{
+    margin-left: 10px;
+  }
+}
+
 .form-group {
   .item {
     display: flex;
     padding: 10px 5px;
+
     .location {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+
       &__item {
         width: 60px;
       }

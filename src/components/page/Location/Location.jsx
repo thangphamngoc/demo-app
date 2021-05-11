@@ -1,14 +1,14 @@
-import React from "react";
+import React , { useEffect } from "react";
 import PropTypes from "prop-types";
 
 const Location = React.memo(({ place, units, cost }) => {
   return (
     <React.Fragment>
-      <p>Locations</p>
+      <p>Locations: </p>
       <div className="location">
         <div className="location__item">
           <p>Place</p>
-          <div>{place?.name}</div>
+          <div>{place}</div>
         </div>
         <div className="location__item">
           <p>Units</p>

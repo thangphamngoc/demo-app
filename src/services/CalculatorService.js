@@ -7,6 +7,6 @@ export function getDataProduct() {
 export function getLocation() {
   return router.get(URL_LOCATION);
 }
-export function addCard(request) {
+export function addToCard(request) {
   return router.post(URL_CARD, request);
 }
